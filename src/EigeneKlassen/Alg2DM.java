@@ -1,6 +1,5 @@
 package EigeneKlassen;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 import net.sf.tweety.lp.asp.solver.DLV;
@@ -11,7 +10,7 @@ import net.sf.tweety.lp.asp.util.AnswerSet;
 import net.sf.tweety.lp.asp.util.AnswerSetList;
 
 public class Alg2DM {
-	public OptimisticLabelAndUtility calculatePessimisticDecisionsDM (DecisionMaking dm) throws SolverException {
+	public OptimisticLabelAndUtility calculateOptimisticDecisionsDM (DecisionMaking dm) throws SolverException {
 		OptimisticLabelAndUtility optimisticLabelAndUtility = new OptimisticLabelAndUtility();
 		OptimisticLabel optimisticLabel = new OptimisticLabel();
 		Double optimisticUtility = 0.0;
@@ -29,11 +28,10 @@ public class Alg2DM {
 	    return optimisticLabelAndUtility;
 	}
 	
-	public static ArrayList<DLPLiteral> getDecisionLiterals(HashSet<DLPLiteral> treeSet, AnswerSet answerset){
-		ArrayList<DLPLiteral> decisionLiterals = new ArrayList<DLPLiteral>();
+	public static HashSet<DLPLiteral> getDecisionLiterals(HashSet<DLPLiteral> treeSet, AnswerSet answerset){
+		HashSet<DLPLiteral> decisionLiterals = new HashSet<DLPLiteral>();
 		for (DLPLiteral decisionLiteral : treeSet) {
-			//if (! (decisionLiteral.toString().startsWith("ass") || decisionLiteral.toString().startsWith("-ass"))){
-				if (answerset.getLiteralsWithName("ass(" + decisionLiteral + ")").size() > 0) {
+				if (answerset.toString().contains("ass(" + decisionLiteral.toString() + ")")){
 					decisionLiterals.add(decisionLiteral);
 				}
 			//}

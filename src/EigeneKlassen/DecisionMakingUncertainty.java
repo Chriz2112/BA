@@ -1,13 +1,9 @@
 package EigeneKlassen;
 
 import java.util.HashSet;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 import net.sf.tweety.lp.asp.syntax.DLPLiteral;
-import net.sf.tweety.lp.asp.syntax.Program;
-import net.sf.tweety.lp.asp.syntax.Rule;
 
 public class DecisionMakingUncertainty {
 	private PossibilisticProgram knowledge;

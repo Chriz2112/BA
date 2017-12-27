@@ -1,7 +1,5 @@
 package EigeneKlassen;
 
-import java.util.ArrayList;
-import java.util.Set;
 import java.util.HashSet;
 
 import net.sf.tweety.lp.asp.syntax.DLPAtom;
@@ -41,7 +39,7 @@ public class DecisionMaking {
 		this.decisions = decisions;
 	}
 	public HashSet<DLPLiteral> getPreferences() {
-		return preferences;
+		return this.preferences;
 	}
 	public void setPreferences(HashSet<DLPLiteral> preferences) {
 		this.preferences = preferences;
@@ -114,30 +112,27 @@ public class DecisionMaking {
 	
 	 public static Program subProgramPessimistic(DecisionMaking dm) {
 		Program subProgram = dm.getKnowledge();
-		//subProgram.add(dm.constraintsPreferences(dm));	
+		subProgram.add(dm.constraintsPreferences(dm));	
 		subProgram.add(dm.assumptions1(dm));
 		subProgram.add(dm.assumptions2(dm));
-		//subProgram.add(dm.weakConstraints(dm));
+		subProgram.add(dm.weakConstraints(dm));
+		System.out.println("Subprogram: " + subProgram.toString());
 		return subProgram;
 	 }
 	 
-/*	 public Program addProgram (Program program1, Program additionalProgram) {
-			 program1.add(additionalProgram);
-		 return program1;
-	 }*/
-	
 	 public static Program subProgramOptimistic(DecisionMaking dm) {
 		Program subProgram = dm.getKnowledge();
 		subProgram.add(preferencesFacts(dm));	
-//		subProgram.add(assumptions1());
-//		subProgram.add(assumptions2());
-//		subProgram.add(weakConstraints());
+		subProgram.add(assumptions1(dm));
+		subProgram.add(assumptions2(dm));
+		subProgram.add(weakConstraints(dm));
 		return subProgram;
 	 }
 	 
 	public static Program preferencesFacts(DecisionMaking dm) {
 		Program factProgram = new Program();
 		for (DLPLiteral preference : dm.preferences) {
+			System.out.println("Literal: " + preference.toString());
 			Rule constraint = new Rule(preference);
 			factProgram.add(constraint);
 		}
@@ -146,12 +141,15 @@ public class DecisionMaking {
 	
 	public static Program constraintsPreferences (DecisionMaking dm) {
 		Program constraintProgram = new Program();
+		System.out.println("Alle Präferenzen: " + dm.getPreferences().toString());
 		for (DLPLiteral preference : dm.preferences) {
+			//System.out.println("Literal: " + preference.toString());
 			Rule constraint = new Rule();
 			DLPNot notPreference = new DLPNot(preference);
 			constraint.addPremise(notPreference);
 			constraintProgram.add(constraint);
 		}
+		System.out.println("Constraint Program: " + constraintProgram.toString());
 		return constraintProgram;
 	}
 	
@@ -182,8 +180,7 @@ public class DecisionMaking {
 	public static Program weakConstraints(DecisionMaking dm) {
 		Program weakConstraintsProgram = new Program();
 		for(DLPLiteral decision : dm.decisions) {
-			Rule rule = new Rule();
-			rule.addPremise(decision);
+			Rule rule = new Rule(decision);
 			weakConstraintsProgram.add(rule);
 		}
 		return weakConstraintsProgram;

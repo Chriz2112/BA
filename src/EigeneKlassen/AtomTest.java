@@ -219,9 +219,9 @@ public class AtomTest {
     		//System.out.println("DM ist: " + dm.toString());
     		Alg1DM alg1 = new Alg1DM();
     		Alg2DM alg2 = new Alg2DM();
-    		PessimisticLabelAndUtility pess = alg1.calculatePessimisticDecisionsDM(dm);
+    		//PessimisticLabelAndUtility pess = alg1.calculatePessimisticDecisionsDM(dm);
     		//OptimisticLabelAndUtility opt = alg2.calculatePessimisticDecisionsDM(dm);
-    		//System.out.println(pess.toString());
+    		//System.out.println(opt.toString());
     		
     		DecisionMakingUncertainty dmu = new DecisionMakingUncertainty();
     		PossibilisticProgram possKnowledge = new PossibilisticProgram();
@@ -240,7 +240,7 @@ public class AtomTest {
     	    possKnowledge.addRule(pr1);
     	    possKnowledge.addRule(pr2);
     	    possKnowledge.addRule(pr3);
-    	    possKnowledge.addRule(pr4);
+    	    //possKnowledge.addRule(pr4);
     	    
     	    dmu.addKnowledge(possKnowledge);
     	    dmu.addDecision(new DLPAtom("c"));
@@ -255,7 +255,11 @@ public class AtomTest {
     	    dmu.addPreference(pl3);
     	    
     	    System.out.println(dmu.toString());
-    	    
+    	     //Alg3DM alg3 = new Alg3DM();
+    	     Alg4DM alg4 = new Alg4DM();
+    	     //PessimisticLabelAndUtility output = alg3.calculatePessimisticDecisionsDMU(dmu);
+    	     OptimisticLabelAndUtility output2 = alg4.calculateOptimisticDecisionsDMU(dmu);
+    	     System.out.println("Label und Nutzen: " + output2.toString());
     	   
     		
     }

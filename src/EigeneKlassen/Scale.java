@@ -1,8 +1,6 @@
 package EigeneKlassen;
 
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 import java.util.TreeSet;
 
 public class Scale implements Iterator<Double>{
@@ -10,6 +8,7 @@ public class Scale implements Iterator<Double>{
 	
 	public Scale (PossibilisticProgram program) {
 		this.scale = new TreeSet<Double>();
+		this.scale.add(0.0);
 		for(PossibilisticRule rule : program) {
 			this.scale.add(rule.getNecessity());
 		}
@@ -17,6 +16,7 @@ public class Scale implements Iterator<Double>{
 	
 	public Scale () {
 		this.scale = new TreeSet<Double>();
+		this.scale.add(0.0);
 	}
 	
 	public void add(Double necessity) {
@@ -44,6 +44,7 @@ public class Scale implements Iterator<Double>{
 	}
 	
 	public Double [] toArray() {
-		return (Double[]) this.scale.toArray();
+		Double[] result = this.scale.toArray(new Double[this.scale.size()]);
+		return result;
 	}
 }

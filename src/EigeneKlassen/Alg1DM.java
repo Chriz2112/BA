@@ -1,6 +1,5 @@
 package EigeneKlassen;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 import net.sf.tweety.lp.asp.solver.DLV;
@@ -17,7 +16,7 @@ public class Alg1DM {
 		Double pessimisticUtility = 0.0;
 		Program subprogram = dm.subProgramPessimistic(dm);
 	    DLV dlv = new DLV("/Users/christophmeyer/Desktop/dlv.bin");
-	    AnswerSetList answerSets = dlv.computeModels(dm.getKnowledge(), 9999);
+	    AnswerSetList answerSets = dlv.computeModels(subprogram, 9999);
 	    if (answerSets.size() > 0) {
 	    	pessimisticUtility = 1.0;
 	    		for (AnswerSet answerSet : answerSets) {

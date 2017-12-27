@@ -1,6 +1,5 @@
 package EigeneKlassen;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 
 import net.sf.tweety.lp.asp.syntax.DLPLiteral;
