@@ -18,11 +18,11 @@ public class OptimisticLabelAndUtility {
 		this.optimisticLabel = optimisticLabel;
 	}
 
-	public Double getPessimisticUtility() {
+	public Double setOptimisticUtility() {
 		return optimisticUtility;
 	}
 
-	public void setPessimisticUtility(Double optimisticUtility) {
+	public void setOptimisticUtility(Double optimisticUtility) {
 		this.optimisticUtility = optimisticUtility;
 	}
 

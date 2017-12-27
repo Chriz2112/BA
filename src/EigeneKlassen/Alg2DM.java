@@ -24,7 +24,7 @@ public class Alg2DM {
 	    		}
 	    }
 	    optimisticLabelAndUtility.setOptimisticLabel(optimisticLabel);
-	    optimisticLabelAndUtility.setPessimisticUtility(optimisticUtility);
+	    optimisticLabelAndUtility.setOptimisticUtility(optimisticUtility);
 	    return optimisticLabelAndUtility;
 	}
 	
@@ -34,7 +34,6 @@ public class Alg2DM {
 				if (answerset.toString().contains("ass(" + decisionLiteral.toString() + ")")){
 					decisionLiterals.add(decisionLiteral);
 				}
-			//}
 		}
 		return decisionLiterals;
 	}

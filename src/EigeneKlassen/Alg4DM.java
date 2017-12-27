@@ -47,7 +47,7 @@ public class Alg4DM {
 				System.out.println("Pess Label Size: " + optimisticLabelAndUtility.getOptimisticLabel().size() + " Label: " + optimisticLabelAndUtility.getOptimisticLabel());
 			}
 		}
-		optimisticLabelAndUtility.setPessimisticUtility(upperbound);
+		optimisticLabelAndUtility.setOptimisticUtility(upperbound);
 		return optimisticLabelAndUtility;
 	}
 }
