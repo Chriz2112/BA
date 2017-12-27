@@ -29,8 +29,8 @@ private ArrayList<ArrayList<DLPLiteral>> optLabel;
 		return optLabel.iterator();
 	}
 	
-	public void add(ArrayList<DLPLiteral> decision) {
-		this.optLabel.add(decision);
+	public void add(ArrayList<DLPLiteral> decisions) {
+		this.optLabel.add(decisions);
 	}
 	
 	public String toString() {

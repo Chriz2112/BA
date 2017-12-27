@@ -111,7 +111,7 @@ public class DecisionMaking {
 		return dm;
 	}
 	
-	 public Program subProgram() {
+	 public Program subProgramPessimistic() {
 		Program subProgram = this.getKnowledge();
 		subProgram.add(constraintsPreferences());	
 		subProgram.add(assumptions1());
@@ -124,6 +124,24 @@ public class DecisionMaking {
 			 program1.add(additionalProgram);
 		 return program1;
 	 }*/
+	
+	 public Program subProgramOptimistic() {
+		Program subProgram = this.getKnowledge();
+		subProgram.add(preferencesFacts());	
+		subProgram.add(assumptions1());
+		subProgram.add(assumptions2());
+		subProgram.add(weakConstraints());
+		return subProgram;
+	 }
+	 
+	public Program preferencesFacts() {
+		Program factProgram = new Program();
+		for (DLPLiteral preference : this.preferences) {
+			Rule constraint = new Rule(preference);
+			factProgram.add(constraint);
+		}
+		return factProgram;
+	}
 	
 	public Program constraintsPreferences () {
 		Program constraintProgram = new Program();
@@ -169,8 +187,4 @@ public class DecisionMaking {
 		}
 		return weakConstraintsProgram;
 	}
-	
-	/*public PessimisticLabel pessDM () {
-		
-	}*/
 }

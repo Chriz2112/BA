@@ -13,6 +13,7 @@ import net.sf.tweety.lp.asp.syntax.DLPNot;
 import net.sf.tweety.lp.asp.syntax.DLPPredicate;
 import net.sf.tweety.lp.asp.syntax.Program;
 import net.sf.tweety.lp.asp.syntax.Rule;
+import net.sf.tweety.lp.asp.util.AnswerSet;
 import net.sf.tweety.lp.asp.util.AnswerSetList;
 import scala.collection.SortedSet;
 
@@ -165,5 +166,25 @@ public class AtomTest {
     	    pessLabel.add(dlpHeads);
     	    System.out.println(pessLabel.toString());*/
     	    
+    	    AnswerSet answerset = new AnswerSet();
+    	    DLPLiteral ass_a = new DLPAtom("ass(a)");
+    	    DLPLiteral ass_e = new DLPAtom("ass(e)");
+    	    DLPLiteral c = new DLPAtom("c");
+    	    answerset.add(ass_e);
+    	    answerset.add(ass_a);
+    	    answerset.add(c);
+    	    
+    	    dm.addDecision(new DLPAtom("a"));
+    	    dm.addDecision(new DLPAtom("e"));
+    	    Alg1DM alg1 = new Alg1DM();
+    	    ArrayList<DLPLiteral> list = Alg1DM.getDecisionLiterals(dm.getDecisions(), answerset);
+    	    
+    	    for(DLPLiteral l : answerset) {
+    	    	System.out.println("In AWM sind folgende Literale: "+ l);
+    	    }
+    	    
+    	    for (DLPLiteral l : list) {
+    	    	System.out.println("Literal: " +  l.toString());
+    	    }
     }
 }

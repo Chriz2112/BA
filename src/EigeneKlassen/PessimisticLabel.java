@@ -29,7 +29,7 @@ public class PessimisticLabel implements Iterable<ArrayList<DLPLiteral>>{
 		return pessLabel.iterator();
 	}
 	
-	public void add(ArrayList<DLPLiteral> decision) {
+	public void addLiterals(ArrayList<DLPLiteral> decision) {
 		this.pessLabel.add(decision);
 	}
 	

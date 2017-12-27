@@ -32,11 +32,17 @@ public class PessimisticLabelAndUtility {
 	}
 	
 	public PessimisticLabelAndUtility(ArrayList<DLPLiteral> literals, Double utility) {
-		this.pessimisticLabel.add(literals);
+		this.pessimisticLabel.addLiterals(literals);
 		this.pessimisticUtility = utility;
 	}
 	
 	public void addLiterals (ArrayList<DLPLiteral> literals) {
-		this.pessimisticLabel.add(literals);
+		this.pessimisticLabel.addLiterals(literals);
+	}
+	
+	public String toString() {
+		String labelAndUtility = new String();
+		labelAndUtility = labelAndUtility.concat(pessimisticLabel.toString() + "pessimistic Utility: " + this.pessimisticUtility);
+		return labelAndUtility;
 	}
 }

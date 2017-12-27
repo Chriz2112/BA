@@ -39,4 +39,10 @@ public class OptimisticLabelAndUtility {
 	public void addLiterals (ArrayList<DLPLiteral> literals) {
 		this.optimisticLabel.add(literals);
 	}
+	
+	public String toString() {
+		String labelAndUtility = new String();
+		labelAndUtility = labelAndUtility.concat(optimisticLabel.toString() + "pessimistic Utility: " + this.optimisticUtility);
+		return labelAndUtility;
+	}
 }
