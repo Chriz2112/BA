@@ -1,6 +1,7 @@
 package EigeneKlassen;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import net.sf.tweety.lp.asp.solver.DLV;
 import net.sf.tweety.lp.asp.solver.SolverException;
@@ -14,7 +15,7 @@ public class Alg2DM {
 		OptimisticLabelAndUtility optimisticLabelAndUtility = new OptimisticLabelAndUtility();
 		OptimisticLabel optimisticLabel = new OptimisticLabel();
 		Double optimisticUtility = 0.0;
-		Program subprogram = dm.subProgramOptimistic();
+		Program subprogram = dm.subProgramOptimistic(dm);
 	    DLV dlv = new DLV("/Users/christophmeyer/Desktop/dlv.bin");
 	    AnswerSetList answerSets = dlv.computeModels(subprogram, 9999);
 	    if (answerSets.size() > 0) {
@@ -28,9 +29,9 @@ public class Alg2DM {
 	    return optimisticLabelAndUtility;
 	}
 	
-	public static ArrayList<DLPLiteral> getDecisionLiterals(ArrayList<DLPLiteral> decisions, AnswerSet answerset){
+	public static ArrayList<DLPLiteral> getDecisionLiterals(HashSet<DLPLiteral> treeSet, AnswerSet answerset){
 		ArrayList<DLPLiteral> decisionLiterals = new ArrayList<DLPLiteral>();
-		for (DLPLiteral decisionLiteral : decisions) {
+		for (DLPLiteral decisionLiteral : treeSet) {
 			//if (! (decisionLiteral.toString().startsWith("ass") || decisionLiteral.toString().startsWith("-ass"))){
 				if (answerset.getLiteralsWithName("ass(" + decisionLiteral + ")").size() > 0) {
 					decisionLiterals.add(decisionLiteral);

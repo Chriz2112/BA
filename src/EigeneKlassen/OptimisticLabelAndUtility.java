@@ -42,7 +42,7 @@ public class OptimisticLabelAndUtility {
 	
 	public String toString() {
 		String labelAndUtility = new String();
-		labelAndUtility = labelAndUtility.concat(optimisticLabel.toString() + "pessimistic Utility: " + this.optimisticUtility);
+		labelAndUtility = labelAndUtility.concat(optimisticLabel.toString() + "optimistic Utility: " + this.optimisticUtility);
 		return labelAndUtility;
 	}
 }

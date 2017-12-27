@@ -1,6 +1,7 @@
 package EigeneKlassen;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import net.sf.tweety.lp.asp.solver.DLV;
 import net.sf.tweety.lp.asp.solver.SolverException;
@@ -14,13 +15,14 @@ public class Alg1DM {
 		PessimisticLabelAndUtility pessimisticLabelAndUtility = new PessimisticLabelAndUtility();
 		PessimisticLabel pessimisticLabel = new PessimisticLabel();
 		Double pessimisticUtility = 0.0;
-		Program subprogram = dm.subProgramPessimistic();
+		Program subprogram = dm.subProgramPessimistic(dm);
 	    DLV dlv = new DLV("/Users/christophmeyer/Desktop/dlv.bin");
-	    AnswerSetList answerSets = dlv.computeModels(subprogram, 9999);
+	    AnswerSetList answerSets = dlv.computeModels(dm.getKnowledge(), 9999);
 	    if (answerSets.size() > 0) {
 	    	pessimisticUtility = 1.0;
 	    		for (AnswerSet answerSet : answerSets) {
 	    			pessimisticLabel.addLiterals(getDecisionLiterals(dm.getDecisions(), answerSet));
+	    	
 	    		}
 	    }
 	    pessimisticLabelAndUtility.setPessimisticLabel(pessimisticLabel);
@@ -28,11 +30,10 @@ public class Alg1DM {
 	    return pessimisticLabelAndUtility;
 	}
 	
-	public static ArrayList<DLPLiteral> getDecisionLiterals(ArrayList<DLPLiteral> decisions, AnswerSet answerset){
-		ArrayList<DLPLiteral> decisionLiterals = new ArrayList<DLPLiteral>();
-		for (DLPLiteral decisionLiteral : decisions) {
-			//if (! (decisionLiteral.toString().startsWith("ass") || decisionLiteral.toString().startsWith("-ass"))){
-				if (answerset.getLiteralsWithName("ass(" + decisionLiteral + ")").size() > 0) {
+	public static HashSet<DLPLiteral> getDecisionLiterals(HashSet<DLPLiteral> treeSet, AnswerSet answerset){
+		HashSet<DLPLiteral> decisionLiterals = new HashSet<DLPLiteral>();
+		for (DLPLiteral decisionLiteral : treeSet) {
+				if (answerset.toString().contains("ass(" + decisionLiteral.toString() + ")")){
 					decisionLiterals.add(decisionLiteral);
 				}
 			//}

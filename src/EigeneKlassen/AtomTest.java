@@ -1,6 +1,7 @@
 package EigeneKlassen;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashSet;
 
 import net.sf.tweety.logics.commons.syntax.Predicate;
 import net.sf.tweety.lp.asp.solver.DLV;
@@ -77,7 +78,7 @@ public class AtomTest {
     }
     
     public static void testProgramm () throws SolverException {
-    	    ArrayList<DLPLiteral> dlpHeadsR1 = new ArrayList<DLPLiteral>();
+    	    /*ArrayList<DLPLiteral> dlpHeadsR1 = new ArrayList<DLPLiteral>();
     	    ArrayList<DLPLiteral> dlpHeadsR2 = new ArrayList<DLPLiteral>();
     	    ArrayList<DLPLiteral> dlpHeadsR3 = new ArrayList<DLPLiteral>();
     	    DLPLiteral head1 = new DLPAtom("a");
@@ -164,7 +165,7 @@ public class AtomTest {
     	    System.out.println("optLabel = " + optLabel.toString());
     	    pessLabel.add(dlpHeads);
     	    pessLabel.add(dlpHeads);
-    	    System.out.println(pessLabel.toString());*/
+    	    System.out.println(pessLabel.toString());
     	    
     	    AnswerSet answerset = new AnswerSet();
     	    DLPLiteral ass_a = new DLPAtom("ass(a)");
@@ -185,6 +186,77 @@ public class AtomTest {
     	    
     	    for (DLPLiteral l : list) {
     	    	System.out.println("Literal: " +  l.toString());
-    	    }
+    	    }*/
+    		// DMU
+    		DecisionMaking dm = new DecisionMaking();
+    		//Wissen
+    		Program knowledge = new Program();
+    		DLPLiteral a = new DLPAtom("a");
+    		DLPLiteral b = new DLPAtom("b");
+    		DLPLiteral c = new DLPAtom("c");
+    		DLPLiteral d = new DLPAtom("d");
+    		DLPLiteral e = new DLPAtom("e");
+    		Rule r1 = new Rule (a,b);
+    		Rule r2 = new Rule (b,c);
+    		Rule r3 = new Rule (e,d);
+    		knowledge.add(r1);
+    		knowledge.add(r2);
+    		knowledge.add(r3);
+    		//Entscheidungen
+    		HashSet<DLPLiteral> decisions = new HashSet<DLPLiteral>();
+    		decisions.add(c);
+    		decisions.add(d);
+    		dm.setDecisions(decisions);
+    		//Präferenzen
+    		HashSet<DLPLiteral> preferences = new HashSet<DLPLiteral>();
+    		preferences.add(a);
+    		preferences.add(b);
+    		preferences.add(e);
+    		dm.addKnowledge(knowledge);
+    		//System.out.println("Wissen");
+    		dm.addDecisions(decisions);
+    		dm.addPreferences(preferences);
+    		//System.out.println("DM ist: " + dm.toString());
+    		Alg1DM alg1 = new Alg1DM();
+    		Alg2DM alg2 = new Alg2DM();
+    		PessimisticLabelAndUtility pess = alg1.calculatePessimisticDecisionsDM(dm);
+    		//OptimisticLabelAndUtility opt = alg2.calculatePessimisticDecisionsDM(dm);
+    		//System.out.println(pess.toString());
+    		
+    		DecisionMakingUncertainty dmu = new DecisionMakingUncertainty();
+    		PossibilisticProgram possKnowledge = new PossibilisticProgram();
+    		Rule r1_ = new Rule (new DLPAtom("a"), new DLPAtom("b"));
+    		Rule r2_ = new Rule (new DLPAtom("b"), new DLPAtom("c"));
+    		Rule r3_ = new Rule (new DLPAtom("e"), new DLPAtom("d"));
+    		Rule r4_ = new Rule(new DLPNeg(new DLPAtom ("e")));
+    		PossibilisticRule pr1 = new PossibilisticRule(1.0, r1_);
+    		PossibilisticRule pr2 = new PossibilisticRule(0.8, r2_);
+    		PossibilisticRule pr3 = new PossibilisticRule(0.5, r3_);
+    	    HashSet<DLPElement> bodyR1 = new HashSet<DLPElement>();
+    	    bodyR1.add(new DLPAtom("c"));
+    	    bodyR1.add(new DLPAtom("d"));
+    	    r4_.addPremises(bodyR1);
+    	    PossibilisticRule pr4 = new PossibilisticRule(0.2, r4_);
+    	    possKnowledge.addRule(pr1);
+    	    possKnowledge.addRule(pr2);
+    	    possKnowledge.addRule(pr3);
+    	    possKnowledge.addRule(pr4);
+    	    
+    	    dmu.addKnowledge(possKnowledge);
+    	    dmu.addDecision(new DLPAtom("c"));
+    	    dmu.addDecision(new DLPAtom("d"));
+    	    
+    	    PossibilisticLiteral pl1 = new PossibilisticLiteral(1.0, new DLPAtom("a"));
+    	    PossibilisticLiteral pl2 = new PossibilisticLiteral(0.8, new DLPAtom("b"));
+    	    PossibilisticLiteral pl3 = new PossibilisticLiteral(0.8, new DLPAtom("e"));
+    	    
+    	    dmu.addPreference(pl1);
+    	    dmu.addPreference(pl2);
+    	    dmu.addPreference(pl3);
+    	    
+    	    System.out.println(dmu.toString());
+    	    
+    	   
+    		
     }
 }

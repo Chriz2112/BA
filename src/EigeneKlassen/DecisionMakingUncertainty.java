@@ -1,7 +1,8 @@
 package EigeneKlassen;
 
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import net.sf.tweety.lp.asp.syntax.DLPLiteral;
@@ -10,27 +11,36 @@ import net.sf.tweety.lp.asp.syntax.Rule;
 
 public class DecisionMakingUncertainty {
 	private PossibilisticProgram knowledge;
-	private ArrayList<DLPLiteral> decisions;
+	private HashSet<DLPLiteral> decisions;
 	private PossibilisticLiteralSet preferences;
-	private HashSet<Double> scale;
+	private Scale scale;
 	
 	public DecisionMakingUncertainty() {
 		this.knowledge = new PossibilisticProgram();
-		this.decisions = new ArrayList<DLPLiteral>();
+		this.decisions = new HashSet<DLPLiteral>();
 		this.preferences = new PossibilisticLiteralSet();
-		this.scale = new HashSet<Double>();
+		this.scale = new Scale();
 	}
 	
+	
+	public Scale getScale() {
+		return scale;
+	}
+
+	public void setScale(Scale scale) {
+		this.scale = scale;
+	}
+
 	public PossibilisticProgram getKnowledge() {
 		return knowledge;
 	}
 	public void setKnowledge(PossibilisticProgram knowledge) {
 		this.knowledge = knowledge;
 	}
-	public ArrayList<DLPLiteral> getDecisions() {
+	public HashSet<DLPLiteral> getDecisions() {
 		return decisions;
 	}
-	public void setDecisions(ArrayList<DLPLiteral> decision) {
+	public void setDecisions(HashSet<DLPLiteral> decision) {
 		this.decisions = decision;
 	}
 	public PossibilisticLiteralSet getPreferences() {
@@ -45,13 +55,13 @@ public class DecisionMakingUncertainty {
 	}
 	
 	public void addRule (PossibilisticRule rule) {
-		this.knowledge.add(rule);
+		this.knowledge.addRule(rule);
 		this.scale.add(rule.getNecessity());
 	}
 	
 	public void addKnowledge(PossibilisticProgram knowledge) {
 		for(PossibilisticRule rule : knowledge) {
-			this.knowledge.add(rule);
+			this.knowledge.addRule(rule);
 			this.scale.add(rule.getNecessity());
 		}
 	}
@@ -60,7 +70,7 @@ public class DecisionMakingUncertainty {
 		this.decisions.add(decision);
 	}
 	
-	public void addDecisions(ArrayList<DLPLiteral> decisions) {
+	public void addDecisions(HashSet<DLPLiteral> decisions) {
 		for(DLPLiteral literal : decisions) {
 			this.decisions.add(literal);	
 		}
@@ -71,7 +81,7 @@ public class DecisionMakingUncertainty {
 		this.scale.add(literal.getNecessity());
 	}
 	
-	public void addPreferences(ArrayList<PossibilisticLiteral> preferences) {
+	public void addPreferences(HashSet<PossibilisticLiteral> preferences) {
 		for(PossibilisticLiteral literal : preferences) {
 			this.preferences.add(literal);
 			this.scale.add(literal.getNecessity());
@@ -80,8 +90,9 @@ public class DecisionMakingUncertainty {
 	
 	public String scaleToString() {
 		String scale = "scale: ";
-		for (Double necessity : this.scale) {
-			scale = scale.concat(necessity + ", ");
+		Iterator<Double> it = this.scale.iterator();
+		while(it.hasNext()) {
+			scale = scale.concat(it.next() + ", ");
 		}
 		return scale;
 	}
@@ -90,7 +101,7 @@ public class DecisionMakingUncertainty {
 		String knowledge = new String();
 		int i = 1;
 		for (PossibilisticRule rule : this.knowledge) {
-			knowledge = knowledge.concat("r" + i + ": (" + rule.getNecessity() + ", " + rule.toString() + "\n");
+			knowledge = knowledge.concat("r" + i + ": (" + rule.getNecessity() + ", " + rule.getRule().toString() + ") \n");
 			i++;
 		}
 		return knowledge;

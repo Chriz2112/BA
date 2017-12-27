@@ -31,14 +31,14 @@ public class PossibilisticProgram implements Iterable<PossibilisticRule>{
 	
 	/*Füge neue Regel zu possibilistischem Programm hinzu */
 	
-	public void add (PossibilisticRule rule) {
+	public void addRule(PossibilisticRule rule) {
 		this.possibilisticProgram.add(rule);
 	}
 	/*Projektion eines possibilistischen Programms */
 	
-	public static Program projection (PossibilisticProgram possibilisticProgram){
+	public Program projection (){
 		Program program = new Program();
-		for(PossibilisticRule rule : possibilisticProgram) {
+		for(PossibilisticRule rule : this.possibilisticProgram) {
 			program.add(rule.getRule());
 		}
 		return program;
@@ -50,7 +50,7 @@ public class PossibilisticProgram implements Iterable<PossibilisticRule>{
 		PossibilisticProgram program = new PossibilisticProgram();
 		for(PossibilisticRule rule : this.possibilisticProgram) {
 			if(rule.getNecessity() >= necessity) {
-				program.add(rule);
+				program.addRule(rule);
 			}
 		}
 		return program;

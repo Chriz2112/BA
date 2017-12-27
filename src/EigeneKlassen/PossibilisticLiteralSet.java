@@ -1,5 +1,5 @@
 package EigeneKlassen;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -8,21 +8,21 @@ import net.sf.tweety.lp.asp.syntax.DLPLiteral;
 
 public class PossibilisticLiteralSet implements Iterable<PossibilisticLiteral>{
 	
-	private ArrayList<PossibilisticLiteral> possibilisticLiterals;
+	private HashSet<PossibilisticLiteral> possibilisticLiterals;
 	
 	public PossibilisticLiteralSet() {
-		this.possibilisticLiterals = new ArrayList<PossibilisticLiteral>();
+		this.possibilisticLiterals = new HashSet<PossibilisticLiteral>();
 	}
 	
-	public PossibilisticLiteralSet(ArrayList<PossibilisticLiteral> possibilisticLiterals) {
+	public PossibilisticLiteralSet(HashSet<PossibilisticLiteral> possibilisticLiterals) {
 		this.possibilisticLiterals = possibilisticLiterals;
 	}
 
-	public ArrayList<PossibilisticLiteral> getPossibilisticLiterals() {
+	public HashSet<PossibilisticLiteral> getPossibilisticLiterals() {
 		return possibilisticLiterals;
 	}
 
-	public void setPossibilisticLiterals(ArrayList<PossibilisticLiteral> possibilisticLiterals) {
+	public void setPossibilisticLiterals(HashSet<PossibilisticLiteral> possibilisticLiterals) {
 		this.possibilisticLiterals = possibilisticLiterals;
 	}
 	
@@ -31,9 +31,9 @@ public class PossibilisticLiteralSet implements Iterable<PossibilisticLiteral>{
 		return possibilisticLiterals.iterator();
 	}
 	
-	public Set<DLPLiteral> projection (PossibilisticLiteralSet possibilisticLiterals){
-		Set<DLPLiteral> literals = new HashSet<DLPLiteral>();
-		for (PossibilisticLiteral literal : possibilisticLiterals) {
+	public HashSet<DLPLiteral> projection (){
+		HashSet<DLPLiteral> literals = new HashSet<DLPLiteral>();
+		for (PossibilisticLiteral literal : this.possibilisticLiterals) {
 			literals.add(literal.getLiteral());
 		}
 		return literals;
@@ -59,5 +59,11 @@ public class PossibilisticLiteralSet implements Iterable<PossibilisticLiteral>{
 			literals = literals.concat("(" + literal.getNecessity() + ", " + literal.getLiteral() + ") \n");
 		}
 		return literals;
+	}
+	
+	public void add(PossibilisticLiteralSet literals) {
+		for (PossibilisticLiteral literal : literals) {
+			this.possibilisticLiterals.add(literal);
+		}
 	}
 }

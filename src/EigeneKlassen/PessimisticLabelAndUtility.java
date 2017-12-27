@@ -1,6 +1,7 @@
 package EigeneKlassen;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import net.sf.tweety.lp.asp.syntax.DLPLiteral;
 
@@ -31,12 +32,12 @@ public class PessimisticLabelAndUtility {
 		this.pessimisticUtility = 0.0;
 	}
 	
-	public PessimisticLabelAndUtility(ArrayList<DLPLiteral> literals, Double utility) {
+	public PessimisticLabelAndUtility(HashSet<DLPLiteral> literals, Double utility) {
 		this.pessimisticLabel.addLiterals(literals);
 		this.pessimisticUtility = utility;
 	}
 	
-	public void addLiterals (ArrayList<DLPLiteral> literals) {
+	public void addLiterals (HashSet<DLPLiteral> literals) {
 		this.pessimisticLabel.addLiterals(literals);
 	}
 	

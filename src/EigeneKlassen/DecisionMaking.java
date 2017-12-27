@@ -2,6 +2,7 @@ package EigeneKlassen;
 
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.HashSet;
 
 import net.sf.tweety.lp.asp.syntax.DLPAtom;
 import net.sf.tweety.lp.asp.syntax.DLPLiteral;
@@ -12,16 +13,16 @@ import net.sf.tweety.lp.asp.syntax.Rule;
 
 public class DecisionMaking {
     private Program knowledge;
-    private ArrayList<DLPLiteral> decisions;
-    private ArrayList<DLPLiteral> preferences;
+    private HashSet<DLPLiteral> decisions;
+    private HashSet<DLPLiteral> preferences;
     
     public DecisionMaking() {
     	    this.knowledge = new Program();
-    	    this.decisions = new ArrayList<DLPLiteral>();
-    	    this.preferences = new ArrayList<DLPLiteral>();
+    	    this.decisions = new HashSet<DLPLiteral>();
+    	    this.preferences = new HashSet<DLPLiteral>();
     }
     
-    public DecisionMaking (Program knowledge, ArrayList<DLPLiteral> decisions, ArrayList <DLPLiteral> preferences) {
+    public DecisionMaking (Program knowledge, HashSet<DLPLiteral> decisions, HashSet <DLPLiteral> preferences) {
     		this.knowledge = knowledge;
     		this.decisions = decisions;
     		this.preferences = preferences;
@@ -33,16 +34,16 @@ public class DecisionMaking {
 	public void setKnowledge(Program knowledge) {
 		this.knowledge = knowledge;
 	}
-	public ArrayList<DLPLiteral> getDecisions() {
+	public HashSet<DLPLiteral> getDecisions() {
 		return decisions;
 	}
-	public void setDecisions(ArrayList<DLPLiteral> decisions) {
+	public void setDecisions(HashSet<DLPLiteral> decisions) {
 		this.decisions = decisions;
 	}
-	public ArrayList<DLPLiteral> getPreferences() {
+	public HashSet<DLPLiteral> getPreferences() {
 		return preferences;
 	}
-	public void setPreferences(ArrayList<DLPLiteral> preferences) {
+	public void setPreferences(HashSet<DLPLiteral> preferences) {
 		this.preferences = preferences;
 	}
 	
@@ -60,8 +61,8 @@ public class DecisionMaking {
 		this.decisions.add(decision);
 	}
 	
-	public void addDecisions(ArrayList<DLPLiteral> decisions) {
-		for(DLPLiteral literal : decisions) {
+	public void addDecisions(HashSet<DLPLiteral> decisions2) {
+		for(DLPLiteral literal : decisions2) {
 			this.decisions.add(literal);	
 		}
 	}
@@ -70,7 +71,7 @@ public class DecisionMaking {
 		this.preferences.add(preference);
 	}
 	
-	public void addPreferences(ArrayList<DLPLiteral> preferences) {
+	public void addPreferences(HashSet<DLPLiteral> preferences) {
 		for(DLPLiteral literal : preferences) {
 			this.preferences.add(literal);
 		}
@@ -111,12 +112,12 @@ public class DecisionMaking {
 		return dm;
 	}
 	
-	 public Program subProgramPessimistic() {
-		Program subProgram = this.getKnowledge();
-		subProgram.add(constraintsPreferences());	
-		subProgram.add(assumptions1());
-		subProgram.add(assumptions2());
-		subProgram.add(weakConstraints());
+	 public static Program subProgramPessimistic(DecisionMaking dm) {
+		Program subProgram = dm.getKnowledge();
+		//subProgram.add(dm.constraintsPreferences(dm));	
+		subProgram.add(dm.assumptions1(dm));
+		subProgram.add(dm.assumptions2(dm));
+		//subProgram.add(dm.weakConstraints(dm));
 		return subProgram;
 	 }
 	 
@@ -125,27 +126,27 @@ public class DecisionMaking {
 		 return program1;
 	 }*/
 	
-	 public Program subProgramOptimistic() {
-		Program subProgram = this.getKnowledge();
-		subProgram.add(preferencesFacts());	
-		subProgram.add(assumptions1());
-		subProgram.add(assumptions2());
-		subProgram.add(weakConstraints());
+	 public static Program subProgramOptimistic(DecisionMaking dm) {
+		Program subProgram = dm.getKnowledge();
+		subProgram.add(preferencesFacts(dm));	
+//		subProgram.add(assumptions1());
+//		subProgram.add(assumptions2());
+//		subProgram.add(weakConstraints());
 		return subProgram;
 	 }
 	 
-	public Program preferencesFacts() {
+	public static Program preferencesFacts(DecisionMaking dm) {
 		Program factProgram = new Program();
-		for (DLPLiteral preference : this.preferences) {
+		for (DLPLiteral preference : dm.preferences) {
 			Rule constraint = new Rule(preference);
 			factProgram.add(constraint);
 		}
 		return factProgram;
 	}
 	
-	public Program constraintsPreferences () {
+	public static Program constraintsPreferences (DecisionMaking dm) {
 		Program constraintProgram = new Program();
-		for (DLPLiteral preference : this.preferences) {
+		for (DLPLiteral preference : dm.preferences) {
 			Rule constraint = new Rule();
 			DLPNot notPreference = new DLPNot(preference);
 			constraint.addPremise(notPreference);
@@ -154,11 +155,11 @@ public class DecisionMaking {
 		return constraintProgram;
 	}
 	
-	public Program assumptions1() {
+	public static Program assumptions1(DecisionMaking dm) {
 		Program assumptionsProgram = new Program();
-		for (DLPLiteral decision : this.decisions) {
-			DLPNeg negAss_d = new DLPNeg("ass(" + decision + ")");
-			DLPAtom ass_d = new DLPAtom("ass(" + decision + ")");
+		for (DLPLiteral decision : dm.decisions) {
+			DLPNeg negAss_d = new DLPNeg("ass(" + decision.toString() + ")");
+			DLPAtom ass_d = new DLPAtom("ass(" + decision.toString() + ")");
 			DLPNot notNegAss_d = new DLPNot(negAss_d);
 			DLPNot notAss_d = new DLPNot (ass_d);
 			Rule assumption1 = new Rule(negAss_d, notAss_d);
@@ -168,19 +169,19 @@ public class DecisionMaking {
 		}
 		return assumptionsProgram;
 	}
-	public Program assumptions2() {
+	public static Program assumptions2(DecisionMaking dm) {
 		Program assumptionsProgram = new Program();
-		for (DLPLiteral decision : this.decisions) {
-			DLPAtom ass_d = new DLPAtom("ass(" + decision + ")");
+		for (DLPLiteral decision : dm.decisions) {
+			DLPAtom ass_d = new DLPAtom("ass(" + decision.toString() + ")");
 			Rule assumption1 = new Rule(decision, ass_d);
 			assumptionsProgram.add(assumption1);		
 		}
 		return assumptionsProgram;
 	}
 	
-	public Program weakConstraints() {
+	public static Program weakConstraints(DecisionMaking dm) {
 		Program weakConstraintsProgram = new Program();
-		for(DLPLiteral decision : this.decisions) {
+		for(DLPLiteral decision : dm.decisions) {
 			Rule rule = new Rule();
 			rule.addPremise(decision);
 			weakConstraintsProgram.add(rule);
