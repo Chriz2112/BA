@@ -39,10 +39,10 @@ public class PossibilisticLiteralSet implements Iterable<PossibilisticLiteral>{
 		return literals;
 	}
 	
-	public PossibilisticLiteralSet literalsNecessity (Double necessity){
+	public PossibilisticLiteralSet literalsNecessity(Double necessity){
 		PossibilisticLiteralSet literals = new PossibilisticLiteralSet();
 		for ( PossibilisticLiteral literal : possibilisticLiterals) {
-		    if(literal.getNecessity() >= necessity) {
+		    if(literal.getNecessity() > necessity) {
 		    	    literals.add(literal);
 		    }
 		}

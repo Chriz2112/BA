@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sf.tweety.logics.commons.syntax.Predicate;
+import net.sf.tweety.lp.asp.solver.DLV;
+import net.sf.tweety.lp.asp.solver.SolverException;
 import net.sf.tweety.lp.asp.syntax.DLPAtom;
 import net.sf.tweety.lp.asp.syntax.DLPElement;
 import net.sf.tweety.lp.asp.syntax.DLPLiteral;
@@ -11,6 +13,7 @@ import net.sf.tweety.lp.asp.syntax.DLPNot;
 import net.sf.tweety.lp.asp.syntax.DLPPredicate;
 import net.sf.tweety.lp.asp.syntax.Program;
 import net.sf.tweety.lp.asp.syntax.Rule;
+import net.sf.tweety.lp.asp.util.AnswerSetList;
 import scala.collection.SortedSet;
 
 public class AtomTest {
@@ -29,7 +32,7 @@ public class AtomTest {
 		this.atom = atom;
 	}
 
-	public static void main (String args []) {
+	public static void main (String args []) throws SolverException {
 		testProgramm();
     }
     
@@ -72,27 +75,45 @@ public class AtomTest {
     	    p.add(r);
     }
     
-    public static void testProgramm () {
-    	    ArrayList<DLPLiteral> dlpHeads = new ArrayList<DLPLiteral>();
+    public static void testProgramm () throws SolverException {
+    	    ArrayList<DLPLiteral> dlpHeadsR1 = new ArrayList<DLPLiteral>();
+    	    ArrayList<DLPLiteral> dlpHeadsR2 = new ArrayList<DLPLiteral>();
+    	    ArrayList<DLPLiteral> dlpHeadsR3 = new ArrayList<DLPLiteral>();
     	    DLPLiteral head1 = new DLPAtom("a");
     	    DLPLiteral head2 = new DLPAtom("b");
-    	    dlpHeads.add(head1);
-    	    dlpHeads.add(head2);
-    	    DLPLiteral body1 = new DLPNeg("c");
-    	    DLPLiteral body2 = new DLPNeg("d");
-    	    DLPNot body3 = new DLPNot(body1);
-    	    ArrayList<DLPElement> body = new ArrayList<DLPElement>();
-    	    body.add(body1);
-    	    body.add(body2);
-    	    body.add(body3);
-    	    Rule r = new Rule (dlpHeads, body);
+    	    DLPLiteral head3 = new DLPAtom("c");
+    	    	DLPLiteral head4 = new DLPAtom("d");
+    	    //System.out.println(head3.toString());
+    	    dlpHeadsR1.add(head1);
+    	    dlpHeadsR1.add(head4);
+    	    DLPLiteral body1 = new DLPAtom("b");
+    	    DLPNot body2 = new DLPNot(head2);
+    	    DLPNot body3 = new DLPNot(head3);
+    	    DLPNot body4 = new DLPNot (head1);
+    	    DLPNot body5 = new DLPNot(head4);
+    	    ArrayList<DLPElement> bodyR1 = new ArrayList<DLPElement>();
+    	    bodyR1.add(head2);
+    	    bodyR1.add(body3);
+    	    Rule r = new Rule (dlpHeadsR1, bodyR1);
+    	    ArrayList<DLPElement> bodyR2 = new ArrayList<DLPElement>();
+    	    bodyR2.add(head2);
+    	    bodyR2.add(body4);
+    	    bodyR2.add(body5);
+    	    Rule r2 = new Rule (head3, bodyR2);
+    	    Rule r3 = new Rule (head2);
+    	    
     	    Program p = new Program();
+    	    
     	    p.add(r);
+    	    p.add(r2);
+    	    p.add(r3);
+    	    
+    	    System.out.println(p.toString());
     	    
     	    ArrayList<PossibilisticRule> rules = new ArrayList<PossibilisticRule> ();
     	    PossibilisticRule possRule = new PossibilisticRule(0.5, r);
     	    String test = possRule.getRule().toString();
-    	    System.out.println(test);
+    	    //System.out.println(test);
     	    PossibilisticRule possRule2 = new PossibilisticRule (1, r);
     	    PossibilisticRule possRule3 = new PossibilisticRule (0.2, r);
     	    rules.add(possRule);
@@ -104,9 +125,9 @@ public class AtomTest {
     	    //System.out.println(test2);
     	    //possProgram.add(possRule2);
     	    //String prog = possProgram.toString();
-    	    System.out.println(possProgram.toString());
+    	    //System.out.println(possProgram.toString());
     	    PossibilisticProgram progNec = possProgram.programNecessity(0.5);
-    	    System.out.println(progNec.toString());
+    	    //System.out.println(progNec.toString());
     	    
     	    PossibilisticLiteralSet possibilisticLiterals = new PossibilisticLiteralSet();
     	    
@@ -114,14 +135,35 @@ public class AtomTest {
     	    PossibilisticLiteral literal2 = new PossibilisticLiteral(0.8, head2);
     	    possibilisticLiterals.add(literal1);
     	    possibilisticLiterals.add(literal2);
-    	    System.out.println(possibilisticLiterals.toString());
-    	    System.out.println(possibilisticLiterals.literalsNecessity(0.6));
+    	    ArrayList<PossibilisticLiteral> possLiterals = new ArrayList<PossibilisticLiteral>();
+    	    possLiterals.add(literal1);
+    	    possLiterals.add(literal2);
+    	    //System.out.println(possibilisticLiterals.toString());
+    	    //System.out.println(possibilisticLiterals.literalsNecessity(0.6));
+    	    DecisionMakingUncertainty dmu = new DecisionMakingUncertainty();
+    	    dmu.addPreferences(possLiterals);
+    	    //System.out.println(dmu.toString());
+    	    //System.out.println(dmu.scaleToString());
+    	    
     	    
     	    DecisionMaking dm = new DecisionMaking();
-    	    dm.addKnowledge(p);
-    	    dm.addDecisions(dlpHeads);
-    	    dm.addPreferences(dlpHeads);
-    	    System.out.println(dm.toString());
+    	    //dm.addKnowledge(p);
+    	    //dm.addDecisions(dlpHeads);
+    	    //dm.addPreferences(dlpHeads);
+    	    //dm.addRule(r);
+    	    //System.out.println("subProgram: ");
+    	    //System.out.println(dm.subProgram().toString());
+    	    DLV dlv = new DLV("/Users/christophmeyer/Desktop/dlv.bin");
+    	    AnswerSetList answersets = dlv.computeModels(p, 5);
+    	    System.out.println(answersets.toString());
+    	    /*
+    	    PessimisticLabel pessLabel = new PessimisticLabel();
+    	    OptimisticLabel optLabel = new OptimisticLabel();
+    	    optLabel.add(dlpHeads);
+    	    System.out.println("optLabel = " + optLabel.toString());
+    	    pessLabel.add(dlpHeads);
+    	    pessLabel.add(dlpHeads);
+    	    System.out.println(pessLabel.toString());*/
     	    
     }
 }
