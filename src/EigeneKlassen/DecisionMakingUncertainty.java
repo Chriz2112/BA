@@ -5,6 +5,13 @@ import java.util.Iterator;
 
 import net.sf.tweety.lp.asp.syntax.DLPLiteral;
 
+/**
+ * this class is for modeling decision making problem under uncertainty
+ * 
+ * @author Christoph Meyer
+ *
+ */
+
 public class DecisionMakingUncertainty {
 	private PossibilisticProgram knowledge;
 	private HashSet<DLPLiteral> decisions;

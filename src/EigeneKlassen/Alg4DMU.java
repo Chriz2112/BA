@@ -7,6 +7,14 @@ import net.sf.tweety.lp.asp.solver.SolverException;
 import net.sf.tweety.lp.asp.syntax.DLPLiteral;
 import net.sf.tweety.lp.asp.syntax.Program;
 
+/**
+ * this class contains the algorithm 4 for
+ * calculating pessimistic decisions for a DMU
+ * 
+ * @author Christoph Meyer
+ *
+ */
+
 public class Alg4DMU {
 	public OptimisticLabelAndUtility calculateOptimisticDecisionsDMU (DecisionMakingUncertainty dmu) throws SolverException {
 		OptimisticLabelAndUtility optimisticLabelAndUtility = new OptimisticLabelAndUtility();
@@ -30,7 +38,6 @@ public class Alg4DMU {
 		dm.addDecisions(dmu.getDecisions());
 		dm.addPreferences(dmu.getPreferences().projection());
 		optimisticLabelAndUtility = alg2.calculateOptimisticDecisionsDM(dm);
-		System.out.println("OL: " + optimisticLabelAndUtility.getOptimisticLabel().toString());
 		if (optimisticLabelAndUtility.getOptimisticLabel().size() > 0) {
 			/*
 			 * there exists one answer set
@@ -64,10 +71,8 @@ public class Alg4DMU {
 				 * create new subProgram
 				 */
 				optimisticLabelAndUtility = alg2.calculateOptimisticDecisionsDM(newDM);
-				//System.out.println("Pess Label Size: " + optimisticLabelAndUtility.getOptimisticLabel().size() + " Label: " + optimisticLabelAndUtility.getOptimisticLabel());
 			}
 		}
-		System.out.println("hier");
 		optimisticLabelAndUtility.setOptimisticUtility(upperbound);
 		return optimisticLabelAndUtility;
 	}

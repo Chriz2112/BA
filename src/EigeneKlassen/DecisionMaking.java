@@ -9,6 +9,13 @@ import net.sf.tweety.lp.asp.syntax.DLPNot;
 import net.sf.tweety.lp.asp.syntax.Program;
 import net.sf.tweety.lp.asp.syntax.Rule;
 
+/**
+ * this class is for modeling decision making problem
+ * 
+ * @author Christoph Meyer
+ *
+ */
+
 public class DecisionMaking {
     private Program knowledge;
     private HashSet<DLPLiteral> decisions;
@@ -187,10 +194,9 @@ public class DecisionMaking {
 	 */
 	 public static Program subProgramPessimistic(DecisionMaking dm) {
 		Program subProgram = dm.getKnowledge();
-		subProgram.add(constraintsPreferences(dm));	
-		subProgram.add(assumptions1(dm));
-		subProgram.add(assumptions2(dm));
-		subProgram.add(weakConstraints(dm));
+		subProgram.add(dm.constraintsPreferences(dm));	
+		subProgram.add(dm.assumptions1(dm));
+		subProgram.add(dm.assumptions2(dm));
 		return subProgram;
 	 }
 	 
@@ -203,10 +209,9 @@ public class DecisionMaking {
 	 
 	 public static Program subProgramOptimistic(DecisionMaking dm) {
 		Program subProgram = dm.getKnowledge();
-		subProgram.add(preferencesFacts(dm));	
-		subProgram.add(assumptions1(dm));
-		subProgram.add(assumptions2(dm));
-		subProgram.add(weakConstraints(dm));
+		subProgram.add(dm.preferencesFacts(dm));	
+		subProgram.add(dm.assumptions1(dm));
+		subProgram.add(dm.assumptions2(dm));
 		return subProgram;
 	 }
 	 
@@ -280,24 +285,18 @@ public class DecisionMaking {
 		for (DLPLiteral decision : dm.decisions) {
 			DLPAtom ass_d = new DLPAtom("ass(" + decision.toString() + ")");
 			Rule assumption1 = new Rule(decision, ass_d);
-			assumptionsProgram.add(assumption1);		
+			assumptionsProgram.add(assumption1);	
 		}
 		return assumptionsProgram;
 	}
 	
-	/**
-	 * creates program with weak constraints for minimal sets of decisions
-	 * 
-	 * @param dm DecisionMaking
-	 * @return weakConstraintsProgram Program
-	 */
-	
-	public static Program weakConstraints(DecisionMaking dm) {
+	/* public static Program weakConstraints(DecisionMaking dm) {
 		Program weakConstraintsProgram = new Program();
 		for(DLPLiteral decision : dm.decisions) {
-			Rule rule = new Rule(decision);
+			Rule rule = new Rule();
+			rule.addPremise(decision);
 			weakConstraintsProgram.add(rule);
 		}
 		return weakConstraintsProgram;
-	}
+	}*/
 }

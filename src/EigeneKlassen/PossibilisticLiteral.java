@@ -1,6 +1,13 @@
 package EigeneKlassen;
 import net.sf.tweety.lp.asp.syntax.DLPLiteral;
 
+/**
+ * this class is for modeling possibilistic literals
+ * 
+ * @author Christoph Meyer
+ *
+ */
+
 public class PossibilisticLiteral {
 	private double necessity;
 	private DLPLiteral literal;

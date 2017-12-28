@@ -4,6 +4,13 @@ import java.util.HashSet;
 
 import net.sf.tweety.lp.asp.syntax.DLPLiteral;
 
+/**
+ * this class is for modeling the pessimistic label and utility of DM/DMU
+ * 
+ * @author Christoph Meyer
+ *
+ */
+
 public class PessimisticLabelAndUtility {
 	private PessimisticLabel pessimisticLabel;
 	private Double pessimisticUtility;

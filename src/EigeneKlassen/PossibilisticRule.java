@@ -1,6 +1,13 @@
 package EigeneKlassen;
 import net.sf.tweety.lp.asp.syntax.Rule;
 
+/**
+ * this class is for modeling possibilistic rules
+ * 
+ * @author Christoph Meyer
+ *
+ */
+
 public class PossibilisticRule {
 	private double necessity;
 	private Rule rule;

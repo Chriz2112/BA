@@ -5,6 +5,13 @@ import java.util.Iterator;
 
 import net.sf.tweety.lp.asp.syntax.DLPLiteral;
 
+/**
+ * this class is for modeling the optimistic label of DM/DMU
+ * 
+ * @author Christoph Meyer
+ *
+ */
+
 public class OptimisticLabel implements Iterable<HashSet<DLPLiteral>>{
 private HashSet<HashSet<DLPLiteral>> optLabel;
 
@@ -53,6 +60,8 @@ private HashSet<HashSet<DLPLiteral>> optLabel;
 		this.optLabel.add(decisions);
 	}
 	
+
+	
 	/**
 	 * converts optimistic label to string
 	 * 
@@ -80,4 +89,29 @@ private HashSet<HashSet<DLPLiteral>> optLabel;
 	public int size () {
 		return this.optLabel.size();
 	}
+	
+	/**
+	 * returns the smallest sets of literals in label
+	 * @return label OptimisticLabel
+	 */
+	
+	public OptimisticLabel getSmallestSets() {
+		OptimisticLabel label = new OptimisticLabel();
+		Integer size = Integer.MAX_VALUE;
+		if (this.optLabel.size() != 0) {
+			for (HashSet<DLPLiteral> literals : this.optLabel) {
+				if (literals.size() < size){
+					size = literals.size();
+				}
+			}
+			for (HashSet<DLPLiteral> decisions : this.optLabel) {
+				if (decisions.size() == size) {
+					label.add(decisions);
+				}
+			}
+		}
+		return label;
+		
+	}
 }
+

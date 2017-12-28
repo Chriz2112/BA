@@ -4,6 +4,13 @@ import java.util.Iterator;
 
 import net.sf.tweety.lp.asp.syntax.DLPLiteral;
 
+/**
+ * this class is for modeling possibilistic literal sets
+ * 
+ * @author Christoph Meyer
+ *
+ */
+
 public class PossibilisticLiteralSet implements Iterable<PossibilisticLiteral>{
 	
 	private HashSet<PossibilisticLiteral> possibilisticLiterals;

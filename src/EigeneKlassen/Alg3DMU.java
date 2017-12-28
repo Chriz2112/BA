@@ -6,6 +6,14 @@ import net.sf.tweety.lp.asp.solver.SolverException;
 import net.sf.tweety.lp.asp.syntax.DLPLiteral;
 import net.sf.tweety.lp.asp.syntax.Program;
 
+/**
+ * this class contains the algorithm 3 for
+ * calculating pessimistic decisions for a DMU
+ * 
+ * @author Christoph Meyer
+ *
+ */
+
 public class Alg3DMU {
 	
 	/**
@@ -64,7 +72,6 @@ public class Alg3DMU {
 				 * calculate pessimistic label and utility for new sub program
 				 */
 				pessimisticLabelAndUtility_subprograms = alg1.calculatePessimisticDecisionsDM(newDM);
-				System.out.println("Pess Label Size: " + pessimisticLabelAndUtility.getPessimisticLabel().size() + " Label: " + pessimisticLabelAndUtility.getPessimisticLabel());
 				/*
 				 * label for new subProgram was not empty
 				 */

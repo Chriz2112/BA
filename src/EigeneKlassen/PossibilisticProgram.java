@@ -4,6 +4,13 @@ import java.util.Iterator;
 
 import net.sf.tweety.lp.asp.syntax.Program;
 
+/**
+ * this class is for modeling possibilistic programs
+ * 
+ * @author Christoph Meyer
+ *
+ */
+
 public class PossibilisticProgram implements Iterable<PossibilisticRule>{
 	
 	private ArrayList<PossibilisticRule> possibilisticProgram;

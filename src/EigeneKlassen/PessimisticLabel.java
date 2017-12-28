@@ -5,6 +5,13 @@ import java.util.HashSet;
 
 import net.sf.tweety.lp.asp.syntax.DLPLiteral;
 
+/**
+ * this class is for modeling the pessimistic label of DM/DMU
+ * 
+ * @author Christoph Meyer
+ *
+ */
+
 public class PessimisticLabel implements Iterable<HashSet<DLPLiteral>>{
 	private HashSet<HashSet<DLPLiteral>> pessLabel;
 	
@@ -76,4 +83,29 @@ public class PessimisticLabel implements Iterable<HashSet<DLPLiteral>>{
 	public int size () {
 		return this.pessLabel.size();
 	}
+	
+	/**
+	 * returns the smallest sets of literals in label
+	 * @return label PessimisticLabel
+	 */
+	
+	public PessimisticLabel getSmallestSets() {
+		PessimisticLabel label = new PessimisticLabel();
+		Integer size = Integer.MAX_VALUE;
+		if (this.pessLabel.size() != 0) {
+			for (HashSet<DLPLiteral> literals : this.pessLabel) {
+				if (literals.size() < size){
+					size = literals.size();
+				}
+			}
+			for (HashSet<DLPLiteral> decisions : this.pessLabel) {
+				if (decisions.size() == size) {
+					label.addLiterals(decisions);
+				}
+			}
+		}
+		return label;
+		
+	}
+	
 }

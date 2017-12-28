@@ -67,12 +67,7 @@ public class AtomTest {
     	    body.add(body3);
     	    Rule r = new Rule (dlpHeads, body);
     	    java.util.SortedSet<DLPLiteral> set = r.getLiterals();
-    	    System.out.println("Alle Literale aus r:");
     	    Object[] arr = set.toArray();
-    	    for (int i = 0; i < arr.length; i++) {
-    	    	    System.out.println("Literal:" + (i+1) + " " + arr[i]);
-    	    }
-    	    System.out.println("Kopf von r: " + r.getConclusion());
     	    Program p = new Program();
     	    p.add(r);
     }
@@ -240,7 +235,7 @@ public class AtomTest {
     	    possKnowledge.addRule(pr1);
     	    possKnowledge.addRule(pr2);
     	    possKnowledge.addRule(pr3);
-    	    //possKnowledge.addRule(pr4);
+    	    possKnowledge.addRule(pr4);
     	    
     	    dmu.addKnowledge(possKnowledge);
     	    dmu.addDecision(new DLPAtom("c"));
@@ -254,12 +249,12 @@ public class AtomTest {
     	    dmu.addPreference(pl2);
     	    dmu.addPreference(pl3);
     	    
-    	    System.out.println(dmu.toString());
-    	     //Alg3DM alg3 = new Alg3DM();
-    	     Alg4DM alg4 = new Alg4DM();
-    	     //PessimisticLabelAndUtility output = alg3.calculatePessimisticDecisionsDMU(dmu);
+    	     Alg3DMU alg3 = new Alg3DMU();
+    	     Alg4DMU alg4 = new Alg4DMU();
+    	     PessimisticLabelAndUtility output = alg3.calculatePessimisticDecisionsDMU(dmu);
     	     OptimisticLabelAndUtility output2 = alg4.calculateOptimisticDecisionsDMU(dmu);
-    	     System.out.println("Label und Nutzen: " + output2.toString());
+    	     System.out.println("PessLabel und Nutzen: " + output.toString());
+    	     System.out.println("OptLabel und Nutzen: " + output2.toString());
     	   
     		
     }

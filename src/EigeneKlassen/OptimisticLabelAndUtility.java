@@ -4,6 +4,13 @@ import java.util.HashSet;
 
 import net.sf.tweety.lp.asp.syntax.DLPLiteral;
 
+/**
+ * this class is for modeling the optimistic label and utility of DM/DMU
+ * 
+ * @author Christoph Meyer
+ *
+ */
+
 public class OptimisticLabelAndUtility {
 	private OptimisticLabel optimisticLabel;
 	private Double optimisticUtility;

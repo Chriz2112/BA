@@ -3,6 +3,13 @@ package EigeneKlassen;
 import java.util.Iterator;
 import java.util.TreeSet;
 
+/**
+ * this class is for modeling the scale of a DMU
+ * 
+ * @author Christoph Meyer
+ *
+ */
+
 public class Scale implements Iterator<Double>{
 	private TreeSet<Double> scale;
 	
