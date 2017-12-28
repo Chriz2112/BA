@@ -7,6 +7,24 @@ import net.sf.tweety.lp.asp.syntax.DLPLiteral;
 
 public class OptimisticLabel implements Iterable<HashSet<DLPLiteral>>{
 private HashSet<HashSet<DLPLiteral>> optLabel;
+
+	/**
+	 * constructor of an empty instance of optimistic label
+	 */
+
+	public OptimisticLabel() {
+		this.optLabel = new HashSet<HashSet<DLPLiteral>>();
+	}
+	
+	/**
+	 * constructor of a non-empty instance of optimistic label
+	 * 
+	 * @param optLabel HashSet
+	 */
+	
+	public OptimisticLabel(HashSet<HashSet<DLPLiteral>> optLabel) {
+		this.optLabel = optLabel;
+	}
 	
 	public HashSet<HashSet<DLPLiteral>> getoptLabel() {
 		return optLabel;
@@ -15,24 +33,31 @@ private HashSet<HashSet<DLPLiteral>> optLabel;
 	public void setoptLabel(HashSet<HashSet<DLPLiteral>> optLabel) {
 		this.optLabel = optLabel;
 	}
-
-	public OptimisticLabel() {
-		this.optLabel = new HashSet<HashSet<DLPLiteral>>();
-	}
 	
-	public OptimisticLabel(HashSet<HashSet<DLPLiteral>> optLabel) {
-		this.optLabel = optLabel;
-	}
+	/**
+	 * creates Iterator for optimistic label
+	 */
 	
 	@Override
 	public Iterator<HashSet<DLPLiteral>> iterator() {
 		return optLabel.iterator();
 	}
 	
-	public void add(HashSet<DLPLiteral> hashSet) {
-		this.optLabel.add(hashSet);
+	/**
+	 * adds a set of decisions to optimisic label
+	 * 
+	 * @param decisions HashSet
+	 */
+	
+	public void add(HashSet<DLPLiteral> decisions) {
+		this.optLabel.add(decisions);
 	}
 	
+	/**
+	 * converts optimistic label to string
+	 * 
+	 * @return optLabel String
+	 */
 	public String toString() {
 		String optLabel = "{";
 		for (HashSet<DLPLiteral> decision : this.optLabel) {
@@ -45,6 +70,12 @@ private HashSet<HashSet<DLPLiteral>> optLabel;
 		optLabel = optLabel.concat("}");
 		return optLabel;
 	}
+	
+	/**
+	 * computes size of an optimistic label
+	 * 
+	 * @return this.optLabel.size()
+	 */
 	
 	public int size () {
 		return this.optLabel.size();

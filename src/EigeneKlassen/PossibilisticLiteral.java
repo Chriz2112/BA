@@ -5,6 +5,12 @@ public class PossibilisticLiteral {
 	private double necessity;
 	private DLPLiteral literal;
 	
+	/**
+	 * constructor of a possibilistic literal
+	 * @param necessity Double
+	 * @param literal DLPLiteral
+	 */
+	
 	public PossibilisticLiteral(Double necessity, DLPLiteral literal) {
 		this.necessity = necessity;
 		this.literal = literal;

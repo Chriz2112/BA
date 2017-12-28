@@ -6,6 +6,11 @@ import java.util.TreeSet;
 public class Scale implements Iterator<Double>{
 	private TreeSet<Double> scale;
 	
+	/**
+	 * creates the scale of a program
+	 * @param program PossibilisticProgram
+	 */
+	
 	public Scale (PossibilisticProgram program) {
 		this.scale = new TreeSet<Double>();
 		this.scale.add(0.0);
@@ -13,6 +18,9 @@ public class Scale implements Iterator<Double>{
 			this.scale.add(rule.getNecessity());
 		}
 	}
+	/**
+	 * creates new scale with single element 0.0
+	 */
 	
 	public Scale () {
 		this.scale = new TreeSet<Double>();
@@ -42,6 +50,11 @@ public class Scale implements Iterator<Double>{
 		}
 		return null;
 	}
+	
+	/**
+	 * converts scale to array for computing upper bound in decision making
+	 * @return result Double[]
+	 */
 	
 	public Double [] toArray() {
 		Double[] result = this.scale.toArray(new Double[this.scale.size()]);

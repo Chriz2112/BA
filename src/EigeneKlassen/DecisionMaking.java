@@ -14,13 +14,32 @@ public class DecisionMaking {
     private HashSet<DLPLiteral> decisions;
     private HashSet<DLPLiteral> preferences;
     
+    /**
+     * constructor for empty DM
+     */
+    
     public DecisionMaking() {
+    	/*
+    	 * creates new empty Instance of a Decision Making Problem
+    	 */
     	    this.knowledge = new Program();
     	    this.decisions = new HashSet<DLPLiteral>();
     	    this.preferences = new HashSet<DLPLiteral>();
     }
+	    
+	/**
+	 * constructor for non-empty Instance of a Decision Making Problem
+	 * 
+	 * @param knowledge Program
+	 * @param decisions HashSet
+	 * @param preferences HashSet
+	 */
     
     public DecisionMaking (Program knowledge, HashSet<DLPLiteral> decisions, HashSet <DLPLiteral> preferences) {
+    	
+    	/*
+    	 * creates new non-empty Instance of a Decision Making Problem
+    	 */
     		this.knowledge = knowledge;
     		this.decisions = decisions;
     		this.preferences = preferences;
@@ -45,35 +64,71 @@ public class DecisionMaking {
 		this.preferences = preferences;
 	}
 	
+	/** 
+	 * Adds a Rule to knowledge
+	 * 
+	 * @param rule Rule
+	 */
 	public void addRule (Rule rule) {
 		this.knowledge.add(rule);
 	}
 	
+	/**
+	 * Adds a Program to the knowledge
+	 * 
+	 * @param knowledge Program
+	 */
 	public void addKnowledge(Program knowledge) {
 		for(Rule rule : knowledge) {
 			this.knowledge.add(rule);			
 		}
 	}
 	
+	/**
+	 * Adds a decision to Set of decisions
+	 * 
+	 * @param decision DLPLiteral
+	 */
 	public void addDecision (DLPLiteral decision) {
 		this.decisions.add(decision);
 	}
 	
+	/**
+	 * adds Set of decisions to decisions
+	 * 
+	 * @param decisions2 HashSet
+	 */
 	public void addDecisions(HashSet<DLPLiteral> decisions2) {
 		for(DLPLiteral literal : decisions2) {
 			this.decisions.add(literal);	
 		}
 	}
 	
+	/**
+	 * adds a preference to the Set of preferences
+	 * 
+	 * @param preference DLPLiteral
+	 */
 	public void addPreference (DLPLiteral preference) {
 		this.preferences.add(preference);
 	}
+	
+	/**
+	 * adds Set of preferences to preferences
+	 * 
+	 * @param preferences HashSet
+	 */
 	
 	public void addPreferences(HashSet<DLPLiteral> preferences) {
 		for(DLPLiteral literal : preferences) {
 			this.preferences.add(literal);
 		}
 	}
+	
+	/**
+	 * the String of the knowledge of a Decision Making Problem
+	 * @return knowledge String
+	 */
 	
 	public String knowledgeToString() {
 		String knowledge = new String();
@@ -85,6 +140,11 @@ public class DecisionMaking {
 		return knowledge;
 	}
 	
+	/**
+	 * the String of the decisions of a Decision Making Problem
+	 * @return decisions String
+	 */
+	
 	public String decisionsToString() {
 		String decisions = new String();
 		int i = 1;
@@ -94,6 +154,11 @@ public class DecisionMaking {
 		}
 		return decisions;
 	}
+	
+	/**
+	 * the String of the preferences of a Decision Making Problem
+	 * @return preferences String
+	 */
 	
 	public String preferencesToString() {
 		String preferences = new String();
@@ -105,20 +170,36 @@ public class DecisionMaking {
 		return preferences;
 	}
 	
+	/**
+	 * the String of a Decision Making Problem
+	 * @return dm String
+	 */
 	public String toString() {
 		String dm = this.knowledgeToString() + this.decisionsToString() + this.preferencesToString();
 		return dm;
 	}
-	
+
+	/**
+	 * creates a subprogram for computing pessimistic decisions
+	 * 
+	 * @param dm DecisionMaking
+	 * @return subProgram Program
+	 */
 	 public static Program subProgramPessimistic(DecisionMaking dm) {
 		Program subProgram = dm.getKnowledge();
-		subProgram.add(dm.constraintsPreferences(dm));	
-		subProgram.add(dm.assumptions1(dm));
-		subProgram.add(dm.assumptions2(dm));
-		subProgram.add(dm.weakConstraints(dm));
-		System.out.println("Subprogram: " + subProgram.toString());
+		subProgram.add(constraintsPreferences(dm));	
+		subProgram.add(assumptions1(dm));
+		subProgram.add(assumptions2(dm));
+		subProgram.add(weakConstraints(dm));
 		return subProgram;
 	 }
+	 
+	 /**
+	  * creates a subprogram for computing optimistic decisions
+	  * 
+	  * @param dm DecisionMaking
+	  * @return subProgram Program
+	  */
 	 
 	 public static Program subProgramOptimistic(DecisionMaking dm) {
 		Program subProgram = dm.getKnowledge();
@@ -129,29 +210,47 @@ public class DecisionMaking {
 		return subProgram;
 	 }
 	 
+	 /**
+	  * creates a program that contains preferences as facts
+	  * 
+	  * @param dm DecisionMaking
+	  * @return factProgram Program
+	  */
+	 
 	public static Program preferencesFacts(DecisionMaking dm) {
 		Program factProgram = new Program();
 		for (DLPLiteral preference : dm.preferences) {
-			System.out.println("Literal: " + preference.toString());
 			Rule constraint = new Rule(preference);
 			factProgram.add(constraint);
 		}
 		return factProgram;
 	}
 	
+	/**
+	 * creates a program that contains constraints for preferences
+	 * 
+	 * @param dm DecisionMaking
+	 * @return constraintProgram Program
+	 */
+	
 	public static Program constraintsPreferences (DecisionMaking dm) {
 		Program constraintProgram = new Program();
-		System.out.println("Alle Präferenzen: " + dm.getPreferences().toString());
 		for (DLPLiteral preference : dm.preferences) {
-			//System.out.println("Literal: " + preference.toString());
 			Rule constraint = new Rule();
 			DLPNot notPreference = new DLPNot(preference);
 			constraint.addPremise(notPreference);
 			constraintProgram.add(constraint);
 		}
-		System.out.println("Constraint Program: " + constraintProgram.toString());
 		return constraintProgram;
 	}
+	
+	/**
+	 * creates program for ordered disjunction of assumptions
+	 * (see paper for details)
+	 * 
+	 * @param dm DecisionMaking
+	 * @return assumptionsProgram Program
+	 */
 	
 	public static Program assumptions1(DecisionMaking dm) {
 		Program assumptionsProgram = new Program();
@@ -167,6 +266,15 @@ public class DecisionMaking {
 		}
 		return assumptionsProgram;
 	}
+	
+	/**
+	 * creates program for ordered disjunction of assumptions
+	 * (see paper for details)
+	 * 
+	 * @param dm DecisionMaking
+	 * @return assumptionsProgram Program
+	 */
+	
 	public static Program assumptions2(DecisionMaking dm) {
 		Program assumptionsProgram = new Program();
 		for (DLPLiteral decision : dm.decisions) {
@@ -176,6 +284,13 @@ public class DecisionMaking {
 		}
 		return assumptionsProgram;
 	}
+	
+	/**
+	 * creates program with weak constraints for minimal sets of decisions
+	 * 
+	 * @param dm DecisionMaking
+	 * @return weakConstraintsProgram Program
+	 */
 	
 	public static Program weakConstraints(DecisionMaking dm) {
 		Program weakConstraintsProgram = new Program();

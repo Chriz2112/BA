@@ -7,28 +7,46 @@ import net.sf.tweety.lp.asp.solver.SolverException;
 import net.sf.tweety.lp.asp.syntax.DLPLiteral;
 import net.sf.tweety.lp.asp.syntax.Program;
 
-public class Alg4DM {
+public class Alg4DMU {
 	public OptimisticLabelAndUtility calculateOptimisticDecisionsDMU (DecisionMakingUncertainty dmu) throws SolverException {
 		OptimisticLabelAndUtility optimisticLabelAndUtility = new OptimisticLabelAndUtility();
+		
+		/*
+		 * initialize utility and upper bound
+		 */
 		Double optimisticUtility = 0.0;
 		Alg2DM alg2 = new Alg2DM();
 		Double [] scaleValues = dmu.getScale().toArray();
+		
 		int i = scaleValues.length;
 		Double upperbound = scaleValues[i-1];
 		
-		/* Erzeuge Programm ohne Sicherheitsgrade */
+		/*
+		 * create subProgram and check, if there is at least one answer set
+		 */
 		
 		DecisionMaking dm = new DecisionMaking();
 		dm.addKnowledge(dmu.getKnowledge().projection());
 		dm.addDecisions(dmu.getDecisions());
 		dm.addPreferences(dmu.getPreferences().projection());
 		optimisticLabelAndUtility = alg2.calculateOptimisticDecisionsDM(dm);
+		System.out.println("OL: " + optimisticLabelAndUtility.getOptimisticLabel().toString());
 		if (optimisticLabelAndUtility.getOptimisticLabel().size() > 0) {
+			/*
+			 * there exists one answer set
+			 */
+			optimisticLabelAndUtility.setOptimisticUtility(upperbound);
 			return optimisticLabelAndUtility;
 		}
 		else {
+			/*
+			 * there exists no answer set
+			 */
 			Iterator<Double> iterator = dmu.getScale().iterator();
 			while(dmu.getScale().hasNext() && optimisticLabelAndUtility.getOptimisticLabel().size() == 0) {
+				/*
+				 * increase utility and lower upper bound
+				 */
 				i--;
 				optimisticUtility = iterator.next();
 				upperbound = scaleValues[i-1];
@@ -42,11 +60,14 @@ public class Alg4DM {
 				newDM.addKnowledge(knowledge);
 				newDM.addDecisions(dmu.getDecisions());
 				newDM.addPreferences(preferences);
-				
+				/*
+				 * create new subProgram
+				 */
 				optimisticLabelAndUtility = alg2.calculateOptimisticDecisionsDM(newDM);
-				System.out.println("Pess Label Size: " + optimisticLabelAndUtility.getOptimisticLabel().size() + " Label: " + optimisticLabelAndUtility.getOptimisticLabel());
+				//System.out.println("Pess Label Size: " + optimisticLabelAndUtility.getOptimisticLabel().size() + " Label: " + optimisticLabelAndUtility.getOptimisticLabel());
 			}
 		}
+		System.out.println("hier");
 		optimisticLabelAndUtility.setOptimisticUtility(upperbound);
 		return optimisticLabelAndUtility;
 	}
